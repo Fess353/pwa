@@ -48,14 +48,23 @@ const App = () => {
   // Функция для скачивания случайной картинки
   const downloadRandomImage = async () => {
     try {
-      const response = await fetch('https://picsum.photos/200/300');
+      // Массив доступных картинок в папке public
+      const imageFiles = ['1.png', '2.png', '3.png'];
+      // Выбор случайного индекса
+      const randomIndex = Math.floor(Math.random() * imageFiles.length);
+      const randomImage = imageFiles[randomIndex];
+  
+      // Формируем URL относительно корня приложения
+      const imageUrl = `/${randomImage}`;
+      const response = await fetch(imageUrl);
       const blob = await response.blob();
       const imageData = await blobToBase64(blob);
-      // @ts-expect-error test
+        // @ts-expect-error test
+  
       setImageSrc(imageData);
       saveImageToIndexedDB(imageData);
     } catch (error) {
-      console.error('Ошибка при скачивании картинки:', error);
+      console.error('Ошибка при загрузке картинки:', error);
     }
   };
 
